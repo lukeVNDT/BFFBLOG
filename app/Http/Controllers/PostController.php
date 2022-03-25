@@ -124,6 +124,7 @@ class PostController extends Controller
                     $img = Image::make( $image);
                     $upload_path = public_path()."/uploadimage/";
                     $img->save($upload_path.$imagename);
+                    dd($upload_path.$imagename);
                     $res = Post::create([
                         'title' => $req->title,
                         'category_id' => $req->category_id,
