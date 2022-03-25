@@ -47,11 +47,7 @@ class PostController extends Controller
                             'imagepost' => $imagename
                         ]);
 
-                        // if(File::exists($imageold)){
-                        //     File::delete(
-                        //         $imageold
-                        //             );
-                        // }
+                       
                         
                     }
                     else{
@@ -121,7 +117,7 @@ class PostController extends Controller
             if($req->file('imagepost')){
                     $image = $req->file('imagepost');
                     $imagename = $image->getClientOriginalName();
-                    $img = Image::make( $image);
+                    $img = Image::make($image);
                     $upload_path = public_path()."/uploadimage/";
                     $img->save($upload_path.$imagename);
                     dd($upload_path.$imagename);
