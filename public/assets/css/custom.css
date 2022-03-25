@@ -1,0 +1,12 @@
+.blog-post .blog-post-body p p img{
+    max-width: 100% !important;
+    height: auto !important;
+}
+.pagination {
+    display: flex !important;
+    justify-content: center !important;
+  }
+  
+  /* .pagination li {
+    display: block !important;
+   } */
