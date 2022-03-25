@@ -99,36 +99,12 @@ class AccountController extends Controller
         }
        else{
         if($req->image){
-            if(empty($oldimg)){
-                $image = $req->file('image');
-                $imagename = $image->getClientOriginalName();
-                 $img = Image::make( $image)->resize(100, 100);
-                 $upload_path = public_path()."/uploadimage/";
-                 $img->save($upload_path.$imagename);
-                 $imagesaved = $upload_path.$imagename;
-                 Profile::create([
-                     'user_id' => $id,
-                     'firstname' => $req->firstname,
-                     'lastname' => $req->lastname,
-                     'number' => $req->number,
-                     'address' =>  $req->address,
-                     'country' => $req->country,
-                     'shortdescription' => $req->shortdescription,
-                     'details' => $req->details,
-                     'fb_link' => $req->fb_link,
-                     'github_link' => $req->github_link,
-                     'image' => $imagename
-                 ]);
- 
-            }
-            if($req->image != $oldimg){
                 $image = $req->file('image');
                $imagename = $image->getClientOriginalName();
                 $img = Image::make( $image)->resize(100, 100);
                 $upload_path = public_path()."/uploadimage/";
                 $img->save($upload_path.$imagename);
                 $imagesaved = $upload_path.$imagename;
-                $imageold = $upload_path.$oldimg;
                 Profile::create([
                     'user_id' => $id,
                     'firstname' => $req->firstname,
@@ -149,33 +125,10 @@ class AccountController extends Controller
                 //             );
                 // }
 
-            }
-            else{
-                $image = $req->file('image');
-                $imagename = $image->getClientOriginalName();
-                 $img = Image::make( $image)->resize(100, 100);
-                 $upload_path = public_path()."/uploadimage/";
-                 $img->save($upload_path.$imagename);
-                 $imagesaved = $upload_path.$imagename;
-                 Profile::create([
-                    'user_id' => $id,
-                    'firstname' => $req->firstname,
-                    'lastname' => $req->lastname,
-                    'number' => $req->number,
-                    'address' =>  $req->address,
-                    'country' => $req->country,
-                    'shortdescription' => $req->shortdescription,
-                    'details' => $req->details,
-                    'fb_link' => $req->fb_link,
-                    'github_link' => $req->github_link,
-                    'image' => $imagename
-                ]);
-                 if(File::exists($imagesaved)){
-                     File::delete(
-                         $upload_path.$imagename
-                             );
-                 }
-            }
+            
+           
+        }
+        else{
             Profile::create([
                 'user_id' => $id,
                 'firstname' => $req->firstname,
