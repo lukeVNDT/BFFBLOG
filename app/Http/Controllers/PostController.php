@@ -25,7 +25,6 @@ class PostController extends Controller
             $post = Post::where('id', $id)->get();
             foreach($post as $posts){
                 $oldimg = $posts->imagepost;
-                dd($oldimg);
             }
          
     
@@ -34,7 +33,7 @@ class PostController extends Controller
                     if($req->imagepost != $oldimg){
                         $image = $req->file('imagepost');
                        $imagename = $image->getClientOriginalName();
-                        $img = Image::make( $image);
+                        $img = Image::make($image);
                         $upload_path = public_path()."/uploadimage/";
                         $img->save($upload_path.$imagename);
                         $imagesaved = $upload_path.$imagename;
@@ -56,8 +55,16 @@ class PostController extends Controller
                         $imagename = $image->getClientOriginalName();
                          $img = Image::make( $image);
                          $upload_path = public_path()."/uploadimage/";
-                         $img->save($upload_path.$imagename);
                          $imagesaved = $upload_path.$imagename;
+                         $imageold = $upload_path.$oldimg;
+                         if($imagesaved == $imageold){ 
+                         if(File::exists($imageold)){
+                            File::delete(
+                                $imageold
+                                    );
+                        }
+                    }
+                         $img->save($imagesaved);
                          Post::where('id', $id)->update([
                             'title' => $req->title,
                             'category_id' => $req->category_id,
@@ -65,11 +72,6 @@ class PostController extends Controller
                             'description' => $req->description,
                             'imagepost' => $imagename
                         ]);
-                         if(File::exists($imagesaved)){
-                             File::delete(
-                                 $upload_path.$imagename
-                                     );
-                         }
                     }
                 }
                 Post::where('id', $id)->update([
