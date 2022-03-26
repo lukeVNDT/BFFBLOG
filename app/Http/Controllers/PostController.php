@@ -22,13 +22,12 @@ class PostController extends Controller
     }
     public function savepost(Request $req, $id){
         if($req->isMethod('post')){
+            dd($req->imagepost);
             $post = Post::where('id', $id)->get();
             foreach($post as $posts){
                 $oldimg = $posts->imagepost;
             }
          
-    
-            if($post->count() > 0){
                 if($req->imagepost){
                     if($req->imagepost != $oldimg){
                         $image = $req->file('imagepost');
@@ -80,7 +79,7 @@ class PostController extends Controller
                     'short_desc' => $req->short_desc,
                     'description' => $req->description,
                 ]);
-           }
+          
         }
     }
     public function editpost($id){
