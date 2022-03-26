@@ -51271,7 +51271,7 @@ var render = function () {
                   _c("img", {
                     staticClass: "img-fluid post-thumb",
                     attrs: {
-                      src: "/uploadimage/" + post.imagepost,
+                      src: "uploadimage/" + post.imagepost,
                       alt: "image",
                     },
                   }),

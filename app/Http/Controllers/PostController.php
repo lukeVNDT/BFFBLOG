@@ -26,17 +26,21 @@ class PostController extends Controller
             foreach($post as $posts){
                 $oldimg = $posts->imagepost;
             }
-         
                 if($req->imagepost){
                     if($req->file('imagepost')->getClientOriginalName() != $oldimg){
                         $image = $req->file('imagepost');
                        $imagename = $image->getClientOriginalName();
                         $img = Image::make($image);
                         $upload_path = public_path()."/uploadimage/";
-                        $img->save($upload_path.$imagename);
                         $imagesaved = $upload_path.$imagename;
                         $imageold = $upload_path.$oldimg;
-
+                        if($imagesaved == $imageold){ 
+                         
+                               File::delete(
+                                   $imageold
+                                       );
+                       }
+                       $img->save($upload_path.$imagename);
                         Post::where('id', $id)->update([
                             'title' => $req->title,
                             'short_desc' => $req->short_desc,
@@ -52,13 +56,12 @@ class PostController extends Controller
                          $upload_path = public_path()."/uploadimage/";
                          $imagesaved = $upload_path.$imagename;
                          $imageold = $upload_path.$oldimg;
-                         if($imagesaved == $imageold){ 
-                         if(File::exists($imageold)){
+  
+                         
                             File::delete(
                                 $imageold
                                     );
-                        }
-                    }
+    
                          $img->save($imagesaved);
                          Post::where('id', $id)->update([
                             'title' => $req->title,
