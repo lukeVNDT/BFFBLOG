@@ -22,7 +22,6 @@ class PostController extends Controller
     }
     public function savepost(Request $req, $id){
         if($req->isMethod('post')){
-            dd($req->imagepost);
             $post = Post::where('id', $id)->get();
             foreach($post as $posts){
                 $oldimg = $posts->imagepost;
