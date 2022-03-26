@@ -29,7 +29,7 @@ class PostController extends Controller
             }
          
                 if($req->imagepost){
-                    if($req->imagepost != $oldimg){
+                    if($req->file('imagepost')->getClientOriginalName() != $oldimg){
                         $image = $req->file('imagepost');
                        $imagename = $image->getClientOriginalName();
                         $img = Image::make($image);
@@ -44,10 +44,7 @@ class PostController extends Controller
                             'category_id' => $req->category_id,
                             'description' => $req->description,
                             'imagepost' => $imagename
-                        ]);
-
-                       
-                        
+                        ]);     
                     }
                     else{
                         $image = $req->file('imagepost');
