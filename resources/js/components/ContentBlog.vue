@@ -35,7 +35,7 @@
             <div class="col-2 col-xl-3">
               <img
                 class="img-fluid post-thumb"
-                v-bind:src="'uploadimage/'+ post.imagepost"
+                v-bind:src="'https://res.cloudinary.com/dtiazqxyd/image/upload/v1648266992/'+ post.imagepost"
                 alt="image"
               />
             </div>

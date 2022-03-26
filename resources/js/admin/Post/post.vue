@@ -64,7 +64,7 @@
           <div class="card h-100">
             <img
               class="card-img-top"
-              v-bind:src="'uploadimage/' + post.imagepost"
+              :src="'https://res.cloudinary.com/dtiazqxyd/image/upload/v1648266992/' + post.imagepost"
               alt="Card image cap"
             />
             <div class="card-body">

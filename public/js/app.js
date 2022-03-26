@@ -48899,7 +48899,9 @@ var render = function () {
                     : _c("img", {
                         staticClass: "d-block rounded",
                         attrs: {
-                          src: "uploadimage/" + _vm.profile.image,
+                          src:
+                            "https://res.cloudinary.com/dtiazqxyd/image/upload/v1648268980/" +
+                            _vm.profile.image,
                           alt: "user-avatar",
                           height: "100",
                           width: "100",
@@ -50570,7 +50572,9 @@ var render = function () {
                           : _c("img", {
                               staticClass: "d-block rounded",
                               attrs: {
-                                src: "/uploadimage/" + _vm.postList.imagepost,
+                                src:
+                                  "https://res.cloudinary.com/dtiazqxyd/image/upload/v1648266992/" +
+                                  _vm.postList.imagepost,
                                 alt: "user-avatar",
                                 height: "100",
                                 width: "100",
@@ -51061,7 +51065,9 @@ var render = function () {
               _c("img", {
                 staticClass: "card-img-top",
                 attrs: {
-                  src: "uploadimage/" + post.imagepost,
+                  src:
+                    "https://res.cloudinary.com/dtiazqxyd/image/upload/v1648266992/" +
+                    post.imagepost,
                   alt: "Card image cap",
                 },
               }),
@@ -51271,7 +51277,9 @@ var render = function () {
                   _c("img", {
                     staticClass: "img-fluid post-thumb",
                     attrs: {
-                      src: "uploadimage/" + post.imagepost,
+                      src:
+                        "https://res.cloudinary.com/dtiazqxyd/image/upload/v1648266992/" +
+                        post.imagepost,
                       alt: "image",
                     },
                   }),

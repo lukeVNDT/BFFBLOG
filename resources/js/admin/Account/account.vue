@@ -53,7 +53,7 @@
                         />
                         <img
                           v-else
-                          :src=" 'uploadimage/' + profile.image"
+                          :src=" 'https://res.cloudinary.com/dtiazqxyd/image/upload/v1648268980/' + profile.image"
                           alt="user-avatar"
                           class="d-block rounded"
                           height="100"

@@ -10,6 +10,7 @@ use App\Models\Profile;
 use Image;
 use Auth;
 use File;
+use Cloudder;
 
 class PostController extends Controller
 {
@@ -28,47 +29,36 @@ class PostController extends Controller
             }
                 if($req->imagepost){
                     if($req->file('imagepost')->getClientOriginalName() != $oldimg){
-                        $image = $req->file('imagepost');
-                       $imagename = $image->getClientOriginalName();
-                        $img = Image::make($image);
-                        $upload_path = public_path()."/uploadimage/";
-                        $imagesaved = $upload_path.$imagename;
-                        $imageold = $upload_path.$oldimg;
-                        if($imagesaved == $imageold){ 
-                         
-                               File::delete(
-                                   $imageold
-                                       );
-                       }
-                       $img->save($upload_path.$imagename);
+                    // old code backup
+                    //     $image = $req->file('imagepost');
+                    //    $imagename = $image->getClientOriginalName();
+                    //     $img = Image::make($image);
+                    //     $upload_path = public_path()."/uploadimage/";
+                    //     $imagesaved = $upload_path.$imagename;
+                    //     $imageold = $upload_path.$oldimg;
+                    cloudinary()->destroy($oldimg);
+                    $result = $req->file('imagepost')->storeOnCloudinary('posts');
+                    $name = $result->getFileName();
+               
                         Post::where('id', $id)->update([
                             'title' => $req->title,
                             'short_desc' => $req->short_desc,
                             'category_id' => $req->category_id,
                             'description' => $req->description,
-                            'imagepost' => $imagename
+                            'imagepost' => $name
                         ]);     
                     }
                     else{
-                        $image = $req->file('imagepost');
-                        $imagename = $image->getClientOriginalName();
-                         $img = Image::make( $image);
-                         $upload_path = public_path()."/uploadimage/";
-                         $imagesaved = $upload_path.$imagename;
-                         $imageold = $upload_path.$oldimg;
-  
-                         
-                            File::delete(
-                                $imageold
-                                    );
-    
-                         $img->save($imagesaved);
+                       
+                        cloudinary()->destroy($oldimg);
+                        $result = $req->file('imagepost')->storeOnCloudinary('posts');
+                        $name = $result->getFileName();
                          Post::where('id', $id)->update([
                             'title' => $req->title,
                             'category_id' => $req->category_id,
                             'short_desc' => $req->short_desc,
                             'description' => $req->description,
-                            'imagepost' => $imagename
+                            'imagepost' => $name
                         ]);
                     }
                 }
@@ -91,13 +81,7 @@ class PostController extends Controller
             foreach($post as $posts){
                 $oldimg = $posts->imagepost;
             }
-            $upload_path = public_path()."/uploadimage/";
-            $imagesaved = $upload_path.$oldimg;
-            if(File::exists($imagesaved)){
-                File::delete(
-                    $upload_path.$oldimg
-                        );
-            }
+            cloudinary()->destroy($oldimg);
         Post::where('id', $id)->delete();
     }
 
@@ -116,18 +100,17 @@ class PostController extends Controller
         // dd($req->all());
         if($req->isMethod('post')){
             if($req->file('imagepost')){
-                    $image = $req->file('imagepost');
-                    $imagename = $image->getClientOriginalName();
-                    $img = Image::make($image);
-                    $upload_path = public_path()."/uploadimage/";
-                    $img->save($upload_path.$imagename);
+        
+                $result = $req->file('imagepost')->storeOnCloudinary('posts');
+                $name = $result->getFileName();
+         
                     $res = Post::create([
                         'title' => $req->title,
                         'category_id' => $req->category_id,
                         'user_id' => Auth::User()->id,
                         'short_desc' => $req->short_desc,
                         'description' => $req->content,
-                        'imagepost' => $imagename
+                        'imagepost' => $name
                     ]);
             }
             else{

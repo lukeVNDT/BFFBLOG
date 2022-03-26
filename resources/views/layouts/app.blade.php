@@ -33,7 +33,7 @@
 			@foreach($user as $key => $profile)
 			<div id="navigation" class="collapse navbar-collapse flex-column" >
 				<div class="profile-section pt-3 pt-lg-0">
-				    <img class="profile-image mb-3 rounded-circle mx-auto" src="{{asset('/uploadimage/'.$profile->image)}}" alt="image" >			
+				    <img class="profile-image mb-3 rounded-circle mx-auto" src="{{'https://res.cloudinary.com/dtiazqxyd/image/upload/v1648268980/'.$profile->image}}" alt="image" >			
 					
 					<div class="bio mb-3">{{$profile->shortdescription}}<br> <router-link class="nav-link" to="/aboutme">Find out more about Me</router-link></div><!--//bio-->
 					<ul class="social-list list-inline py-3 mx-auto">

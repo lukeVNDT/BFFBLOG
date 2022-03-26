@@ -26,14 +26,11 @@ class AccountController extends Controller
         }
         if($user->count() > 0){
             if($req->image){
-                if($req->image != $oldimg){
-                    $image = $req->file('image');
-                   $imagename = $image->getClientOriginalName();
-                    $img = Image::make( $image)->resize(100, 100);
-                    $upload_path = public_path()."/uploadimage/";
-                    $img->save($upload_path.$imagename);
-                    $imagesaved = $upload_path.$imagename;
-                    $imageold = $upload_path.$oldimg;
+                if($req->image->getClientOriginalName() != $oldimg){
+          
+                cloudinary()->destroy($oldimg);
+                $result = $req->file('image')->storeOnCloudinary('avatar');
+                $name = $result->getFileName();
                     Profile::where('user_id', $id)->update([
                         'user_id' => $id,
                         'firstname' => $req->firstname,
@@ -45,23 +42,17 @@ class AccountController extends Controller
                         'details' => $req->details,
                         'fb_link' => $req->fb_link,
                         'github_link' => $req->github_link,
-                        'image' => $imagename
+                        'image' => $name
                     ]);
 
-                    // if(File::exists($imageold)){
-                    //     File::delete(
-                    //         $imageold
-                    //             );
-                    // }
+                  
 
                 }
                 else{
-                    $image = $req->file('image');
-                    $imagename = $image->getClientOriginalName();
-                     $img = Image::make( $image)->resize(100, 100);
-                     $upload_path = public_path()."/uploadimage/";
-                     $img->save($upload_path.$imagename);
-                     $imagesaved = $upload_path.$imagename;
+                  
+                    cloudinary()->destroy($oldimg);
+                    $result = $req->file('image')->storeOnCloudinary('avatar');
+                    $name = $result->getFileName();
                      Profile::where('user_id', $id)->update([
                         'user_id' => $id,
                         'firstname' => $req->firstname,
@@ -73,13 +64,9 @@ class AccountController extends Controller
                         'details' => $req->details,
                         'fb_link' => $req->fb_link,
                         'github_link' => $req->github_link,
-                        'image' => $imagename
+                        'image' => $name
                     ]);
-                     if(File::exists($imagesaved)){
-                         File::delete(
-                             $upload_path.$imagename
-                                 );
-                     }
+                
                 }
             }
 
@@ -99,12 +86,9 @@ class AccountController extends Controller
         }
        else{
         if($req->image){
-                $image = $req->file('image');
-               $imagename = $image->getClientOriginalName();
-                $img = Image::make( $image)->resize(100, 100);
-                $upload_path = public_path()."/uploadimage/";
-                $img->save($upload_path.$imagename);
-                $imagesaved = $upload_path.$imagename;
+      
+            $result = $req->file('image')->storeOnCloudinary('avatar');
+            $name = $result->getFileName();
                 Profile::create([
                     'user_id' => $id,
                     'firstname' => $req->firstname,
@@ -116,15 +100,10 @@ class AccountController extends Controller
                     'details' => $req->details,
                     'fb_link' => $req->fb_link,
                     'github_link' => $req->github_link,
-                    'image' => $imagename
+                    'image' => $name
                 ]);
 
-                // if(File::exists($imageold)){
-                //     File::delete(
-                //         $imageold
-                //             );
-                // }
-
+               
             
            
         }

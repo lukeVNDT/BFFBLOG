@@ -61,7 +61,7 @@
                         />
                         <img
                           v-else
-                          :src="'/uploadimage/' + postList.imagepost"
+                          :src="'https://res.cloudinary.com/dtiazqxyd/image/upload/v1648266992/' + postList.imagepost"
                           alt="user-avatar"
                           class="d-block rounded"
                           height="100"
