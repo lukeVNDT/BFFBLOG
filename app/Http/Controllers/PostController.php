@@ -36,7 +36,7 @@ class PostController extends Controller
                     //     $upload_path = public_path()."/uploadimage/";
                     //     $imagesaved = $upload_path.$imagename;
                     //     $imageold = $upload_path.$oldimg;
-                    cloudinary()->destroy($oldimg);
+                    // cloudinary()->destroy($oldimg);
                     $result = $req->file('imagepost')->storeOnCloudinary('posts');
                     $name = $result->getFileName();
                
