@@ -69,9 +69,7 @@
                               @change="uploadAndReset"
                             />
                           </label>
-                         
-
-                         
+                         <p class="text-danger" v-if="!$v.avatar.required">Image is required</p>
                         </div>
                       </div>
                   
@@ -185,6 +183,9 @@ export default {
       min: minLength(3)
     },
     cateid:{
+      required
+    },
+    avatar: {
       required
     }
   },

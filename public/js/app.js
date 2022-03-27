@@ -6287,8 +6287,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -6319,6 +6317,9 @@ __webpack_require__.r(__webpack_exports__);
       min: (0,vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__.minLength)(3)
     },
     cateid: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__.required
+    },
+    avatar: {
       required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__.required
     }
   },
@@ -50161,6 +50162,12 @@ var render = function () {
                             }),
                           ]
                         ),
+                        _vm._v(" "),
+                        !_vm.$v.avatar.required
+                          ? _c("p", { staticClass: "text-danger" }, [
+                              _vm._v("Image is required"),
+                            ])
+                          : _vm._e(),
                       ]),
                     ]
                   ),
