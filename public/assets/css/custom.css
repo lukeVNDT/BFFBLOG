@@ -16,6 +16,20 @@ body{
   .form-control{
     border-radius: 20px;
   }
+
+  .card{
+    border-radius: 20px !important;
+    box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+  }
+  
+  .card-img, .card-img-top{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  .btn-primary {
+    color: #fff;
+    border-radius: 10px;
+}
   /* .pagination li {
     display: block !important;
    } */

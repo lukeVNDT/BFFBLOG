@@ -162,6 +162,13 @@
               </router-link>
             </li>
 
+            <li class="menu-item " :class="[{active: $route.name === 'listproject'}]">
+            <router-link class="menu-link" to='/project'>
+            <i class='menu-icon tf-icons bx bx-briefcase-alt'></i>
+                <div data-i18n="Analytics">Project</div>
+              </router-link>
+            </li>
+
             <!-- Layouts -->
             <li class="menu-item" :class="[{active: $route.name === 'account'}]">
             <router-link class="menu-link" to='/account'>

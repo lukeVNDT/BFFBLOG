@@ -8,6 +8,11 @@ import Account from './admin/Account/account';
 import ContentBlog from './components/ContentBlog';
 import AboutMe from './components/AboutMe';
 import PostDetail from './components/PostDetail';
+import Project from './admin/Project/listproject';
+import AddProject from './admin/Project/addproject';
+import EditProject from './admin/Project/editproject';
+import AllProject from './components/Project';
+import ProjectDetail from './components/ProjectDetail';
 
 
 const routes = [
@@ -65,6 +70,31 @@ const routes = [
         path: '/postdetail/:id',
         component: PostDetail,
         name: 'postdetail',
+    },
+    {
+        path: '/project',
+        component: Project,
+        name: 'listproject',
+    },
+    {
+        path: '/addproject',
+        component: AddProject,
+        name: 'addproject',
+    },
+    {
+        path: '/editproject/:id',
+        component: EditProject,
+        name: 'editproject',
+    },
+    {
+        path: '/allproject',
+        component: AllProject,
+        name: 'allproject',
+    },
+    {
+        path: '/projectdetail/:id',
+        component: ProjectDetail,
+        name: 'projectdetail',
     },
     
 ];

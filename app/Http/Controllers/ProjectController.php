@@ -3,29 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;
-use App\Models\User;
-use App\Models\Category;
+use App\Models\Project;
 use App\Models\Profile;
-use Image;
 use Auth;
-use File;
-use Cloudder;
 
-class PostController extends Controller
+class ProjectController extends Controller
 {
     public function index(){
-        return view('adminpages.post.addPost');
+        return view('adminpages.project.listProject');
     }
-    public function postdetail(){
+    public function getviewproject(){
         $user = Profile::all();
-        return view('layouts.component.postdetail')->with(compact('user'));
+        return view('layouts.component.project')->with(compact('user'));
     }
-    public function savepost(Request $req, $id){
+    public function addprojectview(){
+        return view('adminpages.project.addProject');
+    }
+    public function editprojectview(){
+        return view('adminpages.project.editProject');
+    }
+    public function getviewprojectdetail(){
+        $user = Profile::all();
+        return view('layouts.component.projectdetail')->with(compact('user'));
+    }
+    public function updateproject(Request $req, $id){
         if($req->isMethod('post')){
-            $post = Post::where('id', $id)->get();
-            foreach($post as $posts){
-                $oldimg = $posts->imagepost;
+            $project = Project::where('id', $id)->get();
+            foreach($project as $pj){
+                $oldimg = $pj->imagepost;
             }
                 if($req->imagepost){
                     if($req->file('imagepost')->getClientOriginalName() != $oldimg){
@@ -37,13 +42,12 @@ class PostController extends Controller
                     //     $imagesaved = $upload_path.$imagename;
                     //     $imageold = $upload_path.$oldimg;
                     cloudinary()->destroy($oldimg);
-                    $result = $req->file('imagepost')->storeOnCloudinary('posts');
+                    $result = $req->file('imagepost')->storeOnCloudinary('projects');
                     $name = $result->getFileName();
                
-                        Post::where('id', $id)->update([
+                        Project::where('id', $id)->update([
                             'title' => $req->title,
                             'short_desc' => $req->short_desc,
-                            'category_id' => $req->category_id,
                             'description' => $req->description,
                             'imagepost' => $name
                         ]);     
@@ -51,62 +55,41 @@ class PostController extends Controller
                     else{
                        
                         cloudinary()->destroy($oldimg);
-                        $result = $req->file('imagepost')->storeOnCloudinary('posts');
+                        $result = $req->file('imagepost')->storeOnCloudinary('projects');
                         $name = $result->getFileName();
-                         Post::where('id', $id)->update([
+                         Project::where('id', $id)->update([
                             'title' => $req->title,
-                            'category_id' => $req->category_id,
                             'short_desc' => $req->short_desc,
                             'description' => $req->description,
                             'imagepost' => $name
                         ]);
                     }
                 }
-                Post::where('id', $id)->update([
+                Project::where('id', $id)->update([
                     'title' => $req->title,
-                    'category_id' => $req->category_id,
                     'short_desc' => $req->short_desc,
                     'description' => $req->description,
                 ]);
           
         }
     }
-    public function editpost($id){
-        $res = Post::where('id', $id)->get();
-
-        return view('adminpages.post.editPost');
+    public function deleteproject($id){
+        $project = Project::where('id', $id)->get();
+        foreach($project as $pj){
+            $oldimg = $pj->imagepost;
+        }
+        cloudinary()->destroy($oldimg);
+    Project::where('id', $id)->delete();
     }
-    public function deletepost($id){
-        $post = Post::where('id', $id)->get();
-            foreach($post as $posts){
-                $oldimg = $posts->imagepost;
-            }
-            cloudinary()->destroy($oldimg);
-        Post::where('id', $id)->delete();
-    }
-
-    public function listpost(){
-        return view('adminpages.post.ListPost');
-    }
-    
-    public function getAllPost(){
-        $post = Post::with('category', 'user')->orderBy('id','DESC')->get();
-
-        return response()->json([
-            'posts' => $post
-        ], 200);
-    }
-    public function addpost(Request $req){
-        // dd($req->all());
+    public function saveproject(Request $req){
         if($req->isMethod('post')){
             if($req->file('imagepost')){
         
-                $result = $req->file('imagepost')->storeOnCloudinary('posts');
+                $result = $req->file('imagepost')->storeOnCloudinary('projects');
                 $name = $result->getFileName();
          
-                    $res = Post::create([
+                    $res = Project::create([
                         'title' => $req->title,
-                        'category_id' => $req->category_id,
                         'user_id' => Auth::User()->id,
                         'short_desc' => $req->short_desc,
                         'description' => $req->content,
@@ -114,9 +97,8 @@ class PostController extends Controller
                     ]);
             }
             else{
-                $res = Post::create([
+                $res = Project::create([
                     'title' => $req->title,
-                    'category_id' => $req->category_id,
                     'user_id' => Auth::User()->id,
                     'short_desc' => $req->short_desc,
                     'description' => $req->content,
@@ -126,5 +108,4 @@ class PostController extends Controller
            
         }
     }
-   
 }
