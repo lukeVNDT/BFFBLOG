@@ -19,7 +19,13 @@ Vue.component('edit-category', require('../js/admin/Category/editcategory.vue').
 Vue.component('account', require('../js/admin/Account/account.vue').default);
 Vue.component('content-blog', require('../js/components/ContentBlog.vue').default);
 Vue.component('about-me', require('../js/components/AboutMe.vue').default);
+Vue.component('list-project', require('../js/admin/Project/listproject.vue').default);
+Vue.component('add-project', require('../js/admin/Project/addproject.vue').default);
+Vue.component('edit-project', require('../js/admin/Project/editproject.vue').default);
+Vue.component('all-project', require('./components/Project.vue').default);
+Vue.component('detail-project', require('./components/ProjectDetail.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
+
 
 
 

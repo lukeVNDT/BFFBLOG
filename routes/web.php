@@ -40,6 +40,14 @@ Route::any('edit-category/{id}', [App\Http\Controllers\CategoryController::class
 Route::any('edit-post/{id}', [App\Http\Controllers\PostController::class, 'editpost']);
 Route::any('save-category/{id}', [App\Http\Controllers\CategoryController::class, 'savecat']);
 Route::any('save-post/{id}', [App\Http\Controllers\PostController::class, 'savepost']);
+Route::post('/save-project', [App\Http\Controllers\ProjectController::class, 'saveproject']);
+Route::get('/project', [App\Http\Controllers\ProjectController::class, 'index']);
+Route::get('/addproject', [App\Http\Controllers\ProjectController::class, 'addprojectview']);
+Route::get('/allproject', [App\Http\Controllers\ProjectController::class, 'getviewproject']);
+Route::get('/projectdetail/{id}', [App\Http\Controllers\ProjectController::class, 'getviewprojectdetail']);
+Route::get('/editproject/{id}', [App\Http\Controllers\ProjectController::class, 'editprojectview']);
+Route::delete('/project/{id}', [App\Http\Controllers\ProjectController::class, 'deleteproject']);
+Route::post('/saveproject/{id}', [App\Http\Controllers\ProjectController::class, 'updateproject']);
 // Route::group(['prefix' => 'admin', 'middleware' => ['auth' => 'admin']], function(){
 //     Route::get('/backend', function(){
 //             return view('admin.index');

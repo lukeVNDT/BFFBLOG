@@ -2,15 +2,15 @@
   <div class="AddPost">
     <div class="container-xxl flex-grow-1 container-p-y">
       <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Posts/</span> Add post
+        <span class="text-muted fw-light">Project/</span> Edit project
       </h4>
-      <form v-on:submit.prevent="addPost" method="POST">
+      <form v-on:submit.prevent="editProject">
         <div class="col-lg-12 mb-4 order-0">
           <div class="card">
             <div class="d-flex align-items-end row">
               <div class="col-sm-7">
                 <div class="card-body">
-                  <h5 class="card-title text-primary">Add new post</h5>
+                  <h5 class="card-title text-primary">Edit project</h5>
                   <p class="mb-4">
                     Make sure to keep up to date with new articles that can keep
                     readers interested
@@ -22,7 +22,7 @@
               <div class="col-sm-5 text-center text-sm-left">
                 <div class="card-body pb-0 px-0 px-md-4">
                   <img
-                    v-bind:src="'images/blogs-and-article.png'"
+                    v-bind:src="'/images/undraw_project_team_lc5a.png'"
                     height="140"
                     alt="View Badge User"
                     data-app-dark-img="illustrations/man-with-laptop-dark.png"
@@ -48,9 +48,21 @@
                 <small class="text-muted float-end">Default label</small>
               </div>
               <div class="card-body">
-                <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <form>
+                  <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <img
-                          alt="post-image"
+                          v-if="projects.imagepost == ''"
+                          :src=" 'images/1.png'"
+                          alt="user-avatar"
+                          class="d-block rounded"
+                          height="100"
+                          width="100"
+                          id="uploadedAvatar"
+                        />
+                        <img
+                          v-else
+                          :src="'https://res.cloudinary.com/dtiazqxyd/image/upload/v1648266992/' + projects.imagepost"
+                          alt="user-avatar"
                           class="d-block rounded"
                           height="100"
                           width="100"
@@ -61,18 +73,17 @@
                             <span class="d-none d-sm-block">Upload new photo</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
                             <input
+                            @change="uploadAndReset"
                               type="file"
                               id="upload"
                               class="account-file-input"
                               hidden
                               accept="image/png, image/jpeg"
-                              @change="uploadAndReset"
                             />
                           </label>
-                         <p class="text-danger" v-if="!$v.avatar.required">Image is required</p>
+                         
                         </div>
                       </div>
-                  
                   <div class="mb-3">
                     <label class="form-label" for="basic-icon-default-fullname"
                       >Title</label
@@ -84,7 +95,7 @@
                         ><i class="bx bx-captions bx-flip-vertical"></i
                       ></span>
                       <input
-                        v-model="title"
+                        v-model="projects.title"
                         type="text"
                         class="form-control"
                         id="basic-icon-default-fullname"
@@ -95,31 +106,24 @@
                     </div>
                     
                   </div>
-                  <p class="text-danger" v-if="!$v.title.required">Please enter title!</p>
-                  <p class="text-danger" v-if="!$v.title.min">
+                  <p class="text-danger" v-if="!$v.projects.title.required">Please enter title!</p>
+                  <p class="text-danger" v-if="!$v.projects.title.min">
                   Title should be at least 3 characters!</p>
-                  <div class="mb-3">
-                        <label for="exampleFormControlSelect1" class="form-label">Category</label>
-                        <select v-model="cateid" class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-                          <option value="" disabled>---Select Category---</option>
-                          <option v-for="cate in categoryList" :key="cate.id" v-bind:value="cate.id">{{cate.name}}</option>
-                        </select>
-                      </div>
-                      <p class="text-danger" v-if="!$v.cateid.required">Please select category!</p>
+                 
                       <div class="mb-3">
                         <label for="exampleFormControlSelect1" class="form-label">Short Description</label>
-                        <textarea v-model="short_desc" rows="4" class="form-control"></textarea>
+                        <textarea v-model="projects.short_desc" rows="4" class="form-control"></textarea>
                       </div>
-                      <p class="text-danger" v-if="!$v.short_desc.required">Please enter short description!</p>
-                  <p class="text-danger" v-if="!$v.short_desc.min">Short description should be at least 3 characters!</p>
+                      <p class="text-danger" v-if="!$v.projects.short_desc.required">Please enter short description!</p>
+                  <p class="text-danger" v-if="!$v.projects.short_desc.min">Short description should be at least 3 characters!</p>
                   <div class="mb-3">
                     <label class="form-label" for="basic-icon-default-message"
                       >Content</label
                     >
-                    <vue-editor v-model="content"></vue-editor>
+                    <vue-editor v-model="projects.description"></vue-editor>
                   </div>
-                  <p class="text-danger" v-if="!$v.content.required">Please enter content!</p>
-              
+                  <p class="text-danger" v-if="!$v.projects.description.required">Please enter content!</p>
+                </form>
               </div>
             </div>
           </div>
@@ -142,7 +146,7 @@
                     class="spinner-border spinner-border-md"
                     style="width: 1rem; height: 1rem"
                   ></div>
-                  <i v-else class="menu-icon tf-icons bx bx-plus"></i>Publish
+                 <i v-else class='menu-icon tf-icons bx bx-save'></i>Save
                 </button>
               </div>
             </div>
@@ -161,83 +165,75 @@ export default {
   },
   data() {
     return {
-      title: "",
-      content: "",
       loading: false,
-      categoryList: [],
-      cateid: "",
-      avatar: '',
-      short_desc:''
+      projects: {},
+      loading: false,
+      avatar: ''
     };
   },
   validations:{
-    title:{
-      required,
-      min: minLength(3)
+    projects:{
+     title:{
+        required,
+        min: minLength(3)
+     },
+     short_desc:{
+        required,
+        min: minLength(3)
+     },
+      description:{
+          required
+        }
     },
-    content:{
-      required
-    },
-    short_desc:{
-      required,
-      min: minLength(3)
-    },
-    cateid:{
-      required
-    },
-    avatar: {
-      required
-    }
   },
   created(){
-    this.getAllcategory();
-    // this.uploadAndReset();
+    this.getprojectdata();
   },
   methods: {
-   
-    getAllcategory(){
-      axios.get('/api/getcategory')
-      .then((res) => {
-        this.categoryList = res.data;
-      });
-    },
     uploadAndReset(e){
       // Update/reset user image of account page
-    let accountUserImage = document.getElementById('uploadedAvatar');
+     let accountUserImage = document.getElementById('uploadedAvatar');
         if (e.target.files[0]) {
           accountUserImage.src = window.URL.createObjectURL(e.target.files[0]);
           this.avatar = e.target.files[0];
           console.log(this.avatar);
         }
  
+    
     },
-    addPost() {
-      this.loading = !false;
-      let form = new FormData();
-      form.append('title', this.title);
-      form.append('short_desc', this.short_desc);
-      form.append('content', this.content);
-      form.append('category_id', this.cateid);
+    editProject(){
+      let id = this.$route.params.id;
+      let form  = new FormData();
+      form.append('title', this.projects.title);
+      form.append('short_desc', this.projects.short_desc);
+      form.append('description', this.projects.description);
       form.append('imagepost', this.avatar);
-     setTimeout(()=>{
-        axios.post('save-post', form)
+      this.loading = !false;
+      setTimeout(()=> {
+        axios.post(`/saveproject/${id}`, form)
       .then((res) => {
          Toast.fire({
               icon: "success",
-              title: "Post successfully added!",
+              title: "Project successfully updated!",
             });
-      this.title = '';
-      this.content = '';
-      this.cateid = '';
-      this.loading = !true;
-      this.$router.push('/post');
-      }).catch((err)=> {
-         Toast.fire({
-              icon: "success",
-              title: "Something went wrong!",
+            this.loading = !true;
+            this.$router.push('/project');
+      })
+      .catch((err) => {
+        Toast.fire({
+              icon: "error",
+              title: "Opps! something went wrong",
             });
       });
-     },2000);
+      },2000);
+    },
+    getprojectdata(){
+    let id = this.$route.params.id;
+      axios.get(`/api/geteditproject/${id}`)
+      .then((res) => {
+        this.projects = res.data[0];
+        console.log(this.projects);
+      });
     },
   },
 };

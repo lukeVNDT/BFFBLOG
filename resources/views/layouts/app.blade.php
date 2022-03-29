@@ -53,11 +53,12 @@
 					<li class="nav-item" >
 					    <router-link class="nav-link" :class="[{active: $route.name === 'aboutme'}]" to="/aboutme"><i class="fas fa-user fa-fw me-2"></i>About Me</router-link>
 					</li>
+					<li class="nav-item" >
+					    <router-link class="nav-link" :class="[{active: $route.name === 'allproject'}]" to="/allproject"><i class="fas fa-briefcase me-2"></i>My Project</router-link>
+					</li>
 				</ul>
 				
-				<!-- <div class="my-2 my-md-3">
-				    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">Get in Touch</a>
-				</div> -->
+				
 			</div>
 		</nav>
     </header>

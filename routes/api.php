@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\Project;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,32 @@ Route::get('/getresultpost', function(Request $req){
        $post
     );
     }
+    
+});
+Route::get('/getproject', function(Request $req){
+    $project = Project::join('profile', 'profile.user_id', '=', 'projects.user_id')
+    ->select('*', 'projects.id as projectid')->paginate(6);
+    return response()->json(
+       $project
+    );
+});
+
+Route::get('/geteditproject/{id}', function($id){
+    $project = Project::where('id', $id)->get();
+    return response()->json(
+       $project
+    );
+});
+
+Route::get('/getresultproject', function(Request $req){
+    if($req->page != ''){
+        $project = Project::join('profile', 'profile.user_id', '=', 'projects.user_id')
+        ->select('*', 'projects.id as projectid')->paginate(6);
+        return response()->json(
+           $project
+        ); 
+    }
+    
     
 });
 

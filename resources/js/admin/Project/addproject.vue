@@ -2,15 +2,15 @@
   <div class="AddPost">
     <div class="container-xxl flex-grow-1 container-p-y">
       <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Posts/</span> Add post
+        <span class="text-muted fw-light">Project/</span> Add project
       </h4>
-      <form v-on:submit.prevent="addPost" method="POST">
+      <form v-on:submit.prevent="addProject" method="POST">
         <div class="col-lg-12 mb-4 order-0">
           <div class="card">
             <div class="d-flex align-items-end row">
               <div class="col-sm-7">
                 <div class="card-body">
-                  <h5 class="card-title text-primary">Add new post</h5>
+                  <h5 class="card-title text-primary">Add new project</h5>
                   <p class="mb-4">
                     Make sure to keep up to date with new articles that can keep
                     readers interested
@@ -22,7 +22,7 @@
               <div class="col-sm-5 text-center text-sm-left">
                 <div class="card-body pb-0 px-0 px-md-4">
                   <img
-                    v-bind:src="'images/blogs-and-article.png'"
+                    v-bind:src="'images/undraw_project_team_lc5a.png'"
                     height="140"
                     alt="View Badge User"
                     data-app-dark-img="illustrations/man-with-laptop-dark.png"
@@ -98,14 +98,6 @@
                   <p class="text-danger" v-if="!$v.title.required">Please enter title!</p>
                   <p class="text-danger" v-if="!$v.title.min">
                   Title should be at least 3 characters!</p>
-                  <div class="mb-3">
-                        <label for="exampleFormControlSelect1" class="form-label">Category</label>
-                        <select v-model="cateid" class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-                          <option value="" disabled>---Select Category---</option>
-                          <option v-for="cate in categoryList" :key="cate.id" v-bind:value="cate.id">{{cate.name}}</option>
-                        </select>
-                      </div>
-                      <p class="text-danger" v-if="!$v.cateid.required">Please select category!</p>
                       <div class="mb-3">
                         <label for="exampleFormControlSelect1" class="form-label">Short Description</label>
                         <textarea v-model="short_desc" rows="4" class="form-control"></textarea>
@@ -114,11 +106,11 @@
                   <p class="text-danger" v-if="!$v.short_desc.min">Short description should be at least 3 characters!</p>
                   <div class="mb-3">
                     <label class="form-label" for="basic-icon-default-message"
-                      >Content</label
+                      >Detail</label
                     >
                     <vue-editor v-model="content"></vue-editor>
                   </div>
-                  <p class="text-danger" v-if="!$v.content.required">Please enter content!</p>
+                  <p class="text-danger" v-if="!$v.content.required">Please enter detail!</p>
               
               </div>
             </div>
@@ -164,8 +156,6 @@ export default {
       title: "",
       content: "",
       loading: false,
-      categoryList: [],
-      cateid: "",
       avatar: '',
       short_desc:''
     };
@@ -182,25 +172,13 @@ export default {
       required,
       min: minLength(3)
     },
-    cateid:{
-      required
-    },
     avatar: {
       required
     }
   },
   created(){
-    this.getAllcategory();
-    // this.uploadAndReset();
   },
   methods: {
-   
-    getAllcategory(){
-      axios.get('/api/getcategory')
-      .then((res) => {
-        this.categoryList = res.data;
-      });
-    },
     uploadAndReset(e){
       // Update/reset user image of account page
     let accountUserImage = document.getElementById('uploadedAvatar');
@@ -211,26 +189,24 @@ export default {
         }
  
     },
-    addPost() {
+    addProject() {
       this.loading = !false;
       let form = new FormData();
       form.append('title', this.title);
       form.append('short_desc', this.short_desc);
       form.append('content', this.content);
-      form.append('category_id', this.cateid);
       form.append('imagepost', this.avatar);
      setTimeout(()=>{
-        axios.post('save-post', form)
+        axios.post('save-project', form)
       .then((res) => {
          Toast.fire({
               icon: "success",
-              title: "Post successfully added!",
+              title: "Project successfully added!",
             });
       this.title = '';
       this.content = '';
-      this.cateid = '';
       this.loading = !true;
-      this.$router.push('/post');
+      this.$router.push('/project');
       }).catch((err)=> {
          Toast.fire({
               icon: "success",
